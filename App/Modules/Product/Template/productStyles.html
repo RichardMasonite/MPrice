@@ -1,0 +1,139 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default panel-pricing">
+            <div class="panel-body">
+                
+                <div class="row">
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-3 center">
+                        <search-box model="vm.filter.SubFamilyName" on-change="vm.updateView()"></search-box>
+
+                    </div>
+                    <div class="col-md-5">
+                        <edit-cancel-save-buttons></edit-cancel-save-buttons>
+
+                    </div>
+                </div>                
+                <hr />
+                <mt-spinner ng-if="vm.dataTransferring"></mt-spinner>
+                <table class="table table-striped parent" ng-if="vm.initialLoadComplete">
+                    <thead>
+                    <tr>
+                        <th colspan="2">
+                            Family / Style / Width
+                        </th>
+                        <th class="center" colspan="{{vm.slabHeights.length}}">Slab Height</th>
+                    </tr>
+                    <tr>
+                        <th colspan="2" class="col-md-2 no-border-top"></th>
+                        <th ng-repeat="slabHeight in vm.slabHeights" class="col-md-2 center subthead">{{slabHeight.Name}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat-start="slabFamily in vm.slabFamilyView" class="no-bg">
+                        <td class="click" colspan="{{vm.slabHeights.length + 6}}">
+                            <a ng-click="slabFamily.original.isExpanded = !slabFamily.original.isExpanded" aria-hidden="true"
+                               aria-expanded="{{slabFamily.original.isExpanded ? 'true' : 'false'}}">
+                                <i class="fa fa-plus-square-o"></i>
+                                <i class="fa fa-minus-square-o"></i>
+                                {{slabFamily.FamilyName}}
+                            </a>
+
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end>
+                        <td colspan="{{vm.slabHeights.length + 6}}" class="hiddenRow no-padding">
+                            <div class="accordian-body subfamily" uib-collapse="!slabFamily.original.isExpanded">
+                                <table class="table table-striped" ng-if="slabFamily.original.isExpanded">
+                                    <tbody>
+                                    <tr ng-repeat-start="subfamily in slabFamily.Subfamilies">
+                                        <td colspan="{{vm.slabHeights.length + 6}}" class="no-padding">
+                                            <table class="table table-striped">
+                                                <tbody>
+                                                <tr>
+                                                    <td class="col-md-9 click">
+                                                        <a ng-click="vm.expandSubfamily(subfamily)" aria-hidden="true"
+                                                           aria-expanded="{{subfamily.isExpanded ? 'true' : 'false'}}">
+                                                            <i class="fa fa-plus-square-o"></i>
+                                                            <i class="fa fa-minus-square-o"></i>
+                                                            {{subfamily.SubFamilyName}}
+                                                        </a>
+
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat-end>
+                                        <td colspan="{{vm.slabHeights.length + 6}}" class="hiddenRow no-padding">
+                                            <div class="accordian-body subfamily" uib-collapse="!subfamily.isExpanded">
+                                                <mt-spinner ng-if="subfamily.isExpanded && !subfamily.isPopulated"></mt-spinner>
+                                                <table class="table table-striped" ng-if="subfamily.isExpanded && subfamily.isPopulated">
+                                                    <tbody>
+                                                    <tr ng-repeat-start="productStyle in subfamily.ProductStyles">
+                                                        <td class="col-md-2 click" colspan="2">
+                                                            <a ng-click="productStyle.isExpanded = !productStyle.isExpanded" aria-hidden="true"
+                                                               aria-expanded="{{productStyle.isExpanded ? 'true' : 'false'}}">
+                                                                <i class="fa fa-plus-square-o"></i>
+                                                                <i class="fa fa-minus-square-o"></i>
+                                                                {{productStyle.ProductStyleDescription}} ({{productStyle.ProductStyleName}})
+                                                            </a>
+
+                                                        </td>
+                                                        <td ng-repeat="productStyleHeight in productStyle.heights" class="col-md-2 center">
+                                                            <select ng-show="vm.isEditMode && productStyleHeight.slabStyleChoices.length" class="form-control"
+                                                                    ng-options="choice.StyleName for choice in productStyleHeight.slabStyleChoices"
+                                                                    ng-model="productStyleHeight.selectedSlabStyle"
+                                                                    ng-change="vm.fill(productStyle, $index)">
+                                                            </select>
+                                                            <span ng-hide="vm.isEditMode">{{productStyleHeight.selectedSlabStyle.StyleName}}</span>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr ng-repeat-end>
+                                                        <td colspan="{{vm.slabHeights.length + 6}}}" class="hiddenRow no-padding">
+                                                            <div class="accordian-body subfamily" uib-collapse="!productStyle.isExpanded">
+                                                                <table class="table table-striped" ng-if="productStyle.isExpanded">
+                                                                    <tbody>
+                                                                    <tr class="accordion-toggle" ng-repeat="productStyleWidth in productStyle.Widths">
+                                                                        <td class="col-md-2 subsubfamily" colspan="2">
+                                                                            {{productStyleWidth.SlabWidthName}}
+                                                                        </td>
+                                                                        <td ng-repeat="productStyleWidthHeight in productStyleWidth.Heights" class="col-md-2 center">
+                                                                            <select class="form-control"
+                                                                                    ng-show="vm.isEditMode && productStyleWidthHeight.SlabStyleChoices.length > 1"
+                                                                                    ng-options="choice.StyleName for choice in productStyleWidthHeight.SlabStyleChoices"
+                                                                                    ng-model="productStyleWidthHeight.selectedSlabStyle" 
+                                                                                    ng-change="vm.productStyleChanged(productStyleWidthHeight, productStyle, $index)">
+                                                                            </select>
+                                                                            <span ng-hide="vm.isEditMode && productStyleWidthHeight.SlabStyleChoices.length > 1">
+                                                                                {{productStyleWidthHeight.selectedSlabStyle.StyleName}}
+                                                                            </span>
+                                                                        </td>
+
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

@@ -1,0 +1,116 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default panel-pricing">
+            <div class="panel-body">
+                
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <items-per-page-selector></items-per-page-selector>
+                    </div>
+                    <div class="col-md-3 center">
+                        <item-code-search></item-code-search>
+                    </div>
+                    <div class="col-md-5">
+
+                        <edit-cancel-save-buttons ng-show="vm.isMasoniteDist()"></edit-cancel-save-buttons>
+                        <cost-import-buttons ng-show="vm.isMasoniteDist()"></cost-import-buttons>
+
+                    </div>
+                </div>
+                <hr />
+                
+
+                <filter-option-buttons></filter-option-buttons>
+
+                <mt-spinner ng-if="vm.dataTransferring"></mt-spinner>
+
+                <table class="table table-striped parent" ng-if="vm.initialLoadComplete">
+                    <thead>
+                    <tr>
+                        <th class="col-lg-3">
+                            <a href ng-click="vm.sort('item.Code')">Price Book Code</a>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-show="!vm.orderBy.reverse && vm.orderBy.expression == 'item.Code'"></span>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-show="vm.orderBy.reverse && vm.orderBy.expression == 'item.Code'"></span>
+                        </th>
+                        <th class="col-lg-2">
+                            <a href ng-click="vm.sort('item.Price')">Price</a>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-show="!vm.orderBy.reverse && vm.orderBy.expression == 'item.Price'"></span>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-show="vm.orderBy.reverse && vm.orderBy.expression == 'item.Price'"></span>
+                        </th>
+                        <th class="col-lg-2">
+                            <a href ng-click="vm.sort('item.Multiplier')">Multiplier</a>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-show="!vm.orderBy.reverse && vm.orderBy.expression == 'item.Multiplier'"></span>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-show="vm.orderBy.reverse && vm.orderBy.expression == 'item.Multiplier'"></span>
+                        </th>
+                        <th class="col-lg-2">
+                            <a href ng-click="vm.sort('item.Cost')">Cost</a>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-show="!vm.orderBy.reverse && vm.orderBy.expression == 'item.Cost'"></span>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-show="vm.orderBy.reverse && vm.orderBy.expression == 'item.Cost'"></span>
+                        </th>
+                        <th class="col-lg-2">
+                            <a href ng-click="vm.sort('status')">Status</a>
+                            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-show="!vm.orderBy.reverse && vm.orderBy.expression == 'status'"></span>
+                            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-show="vm.orderBy.reverse && vm.orderBy.expression == 'status'"></span>
+                        </th>
+                        <th class="col-lg-1">
+                            <a ng-show="vm.isEditMode" href ng-click="vm.deleteAll()" uib-tooltip="DELETE ALL"><i class="fa fa-trash fa-lg pull-left" aria-hidden="true"></i></a>
+                            <a ng-show="vm.isEditMode" href ng-click="vm.undeleteAll()" uib-tooltip="UNDO ALL"><i class="fa fa-undo fa-lg pull-left" aria-hidden="true"></i></a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="glass in vm.glassView.items">
+                        <td class="col-lg-3" ng-hide="vm.isEditMode && glass.status != 'Pending Deletion'">{{glass.item.Code}}</td>
+                        <td class="col-lg-2" ng-hide="vm.isEditMode && glass.status != 'Pending Deletion'">{{glass.item.Price | currency:"$":2}}</td>
+                        <td class="col-lg-2" ng-hide="vm.isEditMode && glass.status != 'Pending Deletion'">{{glass.item.Multiplier}}</td>
+                        <td class="col-lg-2" ng-hide="vm.isEditMode && glass.status != 'Pending Deletion'">{{glass.item.Cost | currency:"$":2}}</td>
+
+                        <td class="col-lg-3" ng-show="vm.isEditMode && glass.status != 'Pending Deletion'"><input ng-model="glass.item.Code" ng-change="vm.edited(glass)"/></td>
+                        <td class="col-lg-2" ng-show="vm.isEditMode && glass.status != 'Pending Deletion'"><input step="any" ng-model="glass.item.Price" ng-change="vm.costCalculatorEdited(glass)" type="number"/></td>
+                        <td class="col-lg-2" ng-show="vm.isEditMode && glass.status != 'Pending Deletion'"><input step="any" ng-model="glass.item.Multiplier" ng-change="vm.costCalculatorEdited(glass)" type="number"/></td>
+                        <td class="col-lg-2" ng-show="vm.isEditMode && glass.status != 'Pending Deletion'"><input step="any" ng-model="glass.item.Cost" ng-change="vm.costEdited(glass)" type="number"/></td>
+
+                        <td class="col-lg-2">{{glass.status}}</td>
+                        <td class="col-lg-1">
+                            <a ng-show="vm.isEditMode" href ng-click="vm.delete(glass)" uib-tooltip="DELETE"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                            <a ng-show="vm.isEditMode" href ng-click="vm.undo(glass)" uib-tooltip="UNDO"><i class="fa fa-undo fa-lg" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="glass in vm.newGlasses" ng-show="vm.isEditMode">
+                        <td class="col-lg-3" ng-show="glass.status == 'Pending Deletion'">{{glass.item.Code}}</td>
+                        <td class="col-lg-2" ng-show="glass.status == 'Pending Deletion'">{{glass.item.Price | currency:"$":2}}</td>
+                        <td class="col-lg-2" ng-show="glass.status == 'Pending Deletion'">{{glass.item.Multiplier}}</td>
+                        <td class="col-lg-2"ng-show="glass.status == 'Pending Deletion'">{{glass.item.Cost | currency:"$":2}}</td>
+
+                        <td class="col-lg-3" ng-hide="glass.status == 'Pending Deletion'"><input ng-model="glass.item.Code" ng-change="vm.newGlassEdited(glass, $last)"/></td>
+                        <td class="col-lg-2" ng-hide="glass.status == 'Pending Deletion'"><input step="any" ng-model="glass.item.Price" ng-change="vm.newCostCalculatorEdited(glass, $last)" type="number"/></td>
+                        <td class="col-lg-2" ng-hide="glass.status == 'Pending Deletion'"><input step="any" ng-model="glass.item.Multiplier" ng-change="vm.newCostCalculatorEdited(glass, $last)" type="number"/></td>
+                        <td class="col-lg-2" ng-hide="glass.status == 'Pending Deletion'"><input step="any" ng-model="glass.item.Cost" ng-change="vm.newCostEdited(glass, $last)" type="number"/></td>
+
+                        <td class="col-lg-2">{{glass.status}}</td>
+                        <td class="col-lg-1">
+                            <a ng-show="vm.isEditMode" href ng-click="vm.delete(glass)" uib-tooltip="DELETE"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                            <a ng-show="vm.isEditMode" href ng-click="vm.undo(glass)" uib-tooltip="UNDO"><i class="fa fa-undo fa-lg" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 center">
+        <p class="text-right">
+            Showing {{(vm.paging.pageNumber - 1) * vm.paging.rowsPerPage + 1}}-{{(vm.paging.pageNumber * vm.paging.rowsPerPage < vm.glassView.length) ? vm.paging.pageNumber * vm.paging.rowsPerPage : vm.glassView.length}} of {{vm.glassView.length}}
+        </p>
+
+        <nav aria-label="Page navigation">
+            <ul uib-pagination total-items="vm.glassView.length" items-per-page="vm.paging.rowsPerPage " boundary-link-numbers="true" max-size="10"
+                ng-model="vm.paging.pageNumber" ng-change="vm.updateView()"></ul>
+        </nav>
+    </div>
+</div>

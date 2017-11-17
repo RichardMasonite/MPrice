@@ -1,0 +1,84 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default panel-pricing">
+            <div class="panel-body">
+                
+                <div class="row">
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-3 center">
+                        <search-box model="vm.filter.GlassShapeCode" on-change="vm.updateView()"></search-box>
+                    </div>
+                    <div class="col-md-5">
+                        <edit-cancel-save-buttons></edit-cancel-save-buttons>
+                    </div>
+                </div>
+               
+                <hr />
+                <mt-spinner ng-if="vm.dataTransferring"></mt-spinner>
+                <table class="table table-striped parent" ng-if="vm.initialLoadComplete">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">
+                                Family / Size
+
+                            </th>
+                            <th class="col-md-2 center">Stock</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- ----------------- Family Convenience row below this Display the Door Family Parent row ------------------------ -->
+                        <tr class="no-bg" ng-repeat-start="glassDesign in vm.glassDesignView">
+                            <td class="col-md-2 click">
+                                <a ng-click="vm.toggleCollapse(glassDesign.Id)" aria-hidden="true" aria-expanded="{{vm.isExpanded[glassDesign.Id] ? 'true' : 'false'}}">
+                                    <i class="fa fa-plus-square-o"></i>
+                                    <i class="fa fa-minus-square-o"></i>
+                                    {{glassDesign.GlassDesign}}
+                                </a>
+
+                            </td>
+                            <td class="col-md-2 center">
+                                <button type="button"
+                                        class="btn btn-default btn-xs"
+                                        ng-show="vm.isEditMode"
+                                        ng-click="vm.convenienceCheck(glassDesign)"
+                                        ng-class="vm.statusCssClass[vm.convenienceChecked[glassDesign.Id].StockItem]">
+                                    stock
+                                </button>
+                                <span ng-hide="vm.isEditMode" ng-class="vm.statusCssClass[vm.convenienceChecked[glassDesign.Id].StockItem]">stock</span>
+                            </td>
+                        </tr>
+
+                        <!-- ----------------- Family Convenience row above this ------------------------ -->
+                        <tr ng-repeat-end>
+                            <td colspan="2" class="hiddenRow no-padding">
+                                <div class="accordian-body subfamily" uib-collapse="!vm.isExpanded[glassDesign.Id]">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                            <tr ng-repeat="glassShape in glassDesign.GlassShapeStocks" class="accordion-toggle">
+                                                <td class="col-md-2">{{glassShape.GlassShapeCode}}</td>
+                                                <td class="col-md-2 center">
+                                                    <span ng-hide="vm.isEditMode" ng-class="vm.statusCssClass[vm.lookupDict[glassShape.GlassDesignId + glassShape.GlassShapeId].StockItem]">stock</span>
+                                                    <button type="button"
+                                                            class="btn btn-default btn-xs"
+                                                            ng-show="vm.isEditMode"
+                                                            ng-click="vm.updateChildStock(glassDesign, glassShape)"
+                                                            ng-class="vm.statusCssClass[vm.lookupDict[glassShape.GlassDesignId + glassShape.GlassShapeId].StockItem]">
+                                                        stock
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        <!-- ----------------- Glass child records row above this ------------------------ -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

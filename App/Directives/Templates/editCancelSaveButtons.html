@@ -1,0 +1,5 @@
+﻿<div class="pull-right">
+    <button class="btn btn-primary" data-dismiss="modal" aria-label="Edit" ng-click="vm.isEditMode = !vm.isEditMode" ng-hide="vm.isEditMode">EDIT</button>
+    <button class="btn btn-danger" data-dismiss="modal" aria-label="Cancel" ng-click="vm.cancel()" ng-show="vm.isEditMode">CANCEL</button>
+    <button class="btn btn-success" ng-click="vm.save()" ng-show="vm.isEditMode">SAVE</button>
+</div>

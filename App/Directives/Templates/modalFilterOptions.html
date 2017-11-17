@@ -1,0 +1,25 @@
+﻿
+<div class="row">
+    <div class="col-md-12 margin-20">
+        Filters:
+        <button type="button" class="btn btn-default" ng-repeat="filterProperty in vm.filterPropertyOrder"  ng-click="vm.openFilterModal(filterProperty)">
+            {{vm.filterPropertyMap[filterProperty].name}}
+        </button>
+    </div>
+</div>     
+
+<div class="row">
+    <div class="col-md-12">
+        <div ng-repeat="filterProperty in vm.filterPropertyOrder">
+            <div uib-alert class="alert edit col-md-1" role="alert"
+                 ng-repeat="(selectedId, isSelected) in vm.filterPropertyMap[filterProperty].selected"
+                 ng-show="isSelected">
+                <button type="button" class="close" aria-label="Close"
+                        ng-click="vm.filterPropertyMap[filterProperty].selected[selectedId] = !isSelected; vm.updateView()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{vm.filterPropertyMap[filterProperty].list[selectedId]}}
+            </div>
+        </div>
+    </div>
+</div>   

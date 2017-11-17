@@ -1,0 +1,233 @@
+﻿<!--    ---------------------- ***  -   ***   -------------------------------    -->
+<!-- Page Content -->
+<div id="page-content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-lg-3 col-md-4 col-sm-12 col-lg-offset-7 col-md-offset-8">
+                <div class="input-group margin-20">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                    </span>
+                </div>
+                <!-- /input-group -->
+            </div>
+            <!-- /.col-lg-3 -->
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+
+                            <!-- ----------------- Height Drop Down options ---------------------- -->
+
+                            <div class="col-lg-11">
+                                <div class="col-lg-12 no-padding-lr">
+                                    <p>Select Height: {{vm.selectedHeight}}</p>
+                                </div>
+                                <div class="col-lg-1 no-padding-lr filter" style="width:200px;">
+                                    <div class="form-group">
+
+
+                                        <div class="form-group">
+                                            <!--<select class="form-control" id="sel1"  ng-selected="{{vm.selectedHeight = doorHeight.Id}}"  ng-options="doorHeight as ('Height: ' + doorHeight.Height) for doorHeight in vm.doorHeights">
+                                <option></option>
+                            </select>-->
+                                            <!--<select class="form-control" id="sel1" ng-model="vm.selectedHeight" ng-change="vm.assignHeight(doorHeight)" ng-options="doorHeight as ('Height: ' + doorHeight.Height) for doorHeight in vm.doorHeights">
+                                <option></option>
+                            </select>-->
+
+
+                                            <select class="form-control" id="sel1">
+                                                <option ng-repeat="doorHeight in vm.doorHeights" ng-model="vm.selectedHeight" ng-change="vm.assignHeight(doorHeight)">Height {{doorHeight.Height}}</option>
+                                            </select>
+
+                                            <!--this does show the id  but only the initial one  but  it throws errors on console for every subsequently loaded one
+                                and then does NOT call the function or update
+                            <select class="form-control" id="sel1">
+                                    <option ng-repeat="doorHeight in vm.doorHeights" ng-model="vm.selectedHeight" ng-change="vm.assignHeight(doorHeight)" ng-selected ="{{vm.selectedHeight = doorHeight.Id}}">Height {{doorHeight.Height}}</option>
+                                </select>-->
+                                            <!--   Doesnt update at all   but does display all options.  does NOT call the function
+                                <select class="form-control" id="sel1">
+                                <option ng-repeat="doorHeight in vm.doorHeights" ng-model="vm.selectedHeight" ng-change="vm.assignHeight(doorHeight.Id)">Height {{doorHeight.Height}}</option>
+                            </select>-->
+                                            <!--Doesnt update at all   but does display all options.  does NOT call the function
+
+                                <select class="form-control" id="sel1">
+                                <option ng-repeat="doorHeight in vm.doorHeights" ng-model="vm.selectedHeight" ng-change="vm.assignHeight(doorHeight.Id)">Height {{doorHeight.Height}}</option>
+                            </select>-->
+                                        </div>
+                                    </div>
+
+                                    <!-- /Filter -->
+                                </div>
+
+                                <!-- ----------------- Items per page options ---------------------- -->
+                                <!-- /.col-lg-4 -->
+                                <div class="col-lg-1">
+                                    <div class="col-lg-12 no-padding-lr">
+                                        <p>Items</p>
+                                    </div>
+                                    <div class="col-lg-12 no-padding-lr">
+                                        <!-- Select -->
+                                        <div class="form-group">
+                                            <select class="form-control" id="sel1">
+                                                <option>25</option>
+                                                <option>50</option>
+                                                <option>200</option>
+                                                <option>500</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.col-lg-1 -->
+                            </div>
+
+
+                            <!-- ----------------- Table - Header Contents  ---------------------- -->
+                            <!-- Table -->
+                            <table class="table table-striped parent"> <!-- only table-->
+                                <thead>
+                                    <tr>
+                                        <th nowrap="nowrap">
+                                            Family
+                                            <div class="box pull-right">
+                                                <div class="container-2">
+                                                    <span class="icon"><i class="fa fa-search"></i></span>
+                                                    <input type="search" id="search" />
+                                                </div>
+                                            </div>
+                                        </th>
+<!-- ------------------  display the  depths ( this includes the Door or Bifold which was added in the controller )  -----------------  -->
+                                        <th ng-repeat="doorDepth in vm.doorDepths" class="center extra-border" colspan="4">{{doorDepth.Depth}}</th>
+                                    </tr>
+<!-- -------------------- display the  core types ---------------------------  -->
+                                    <tr>
+                                        <th class="no-border-top"></th>
+                                        <th class="subthead center" ng-model="core" ng-repeat="coreType in vm.doorDepthCoreType">{{coreType.DoorCoreCode}}</th>
+                                   </tr>
+                                </thead>
+
+                                <tbody>
+ <!-- -----------------  Family Convenience row below this   Display the Door Family Parent row  ------------------------  -->
+
+                                    <tr class="no-bg" ng-repeat-start="family in vm.interiorDoors">
+                                        <td class="col-md-3">
+                                            <a ng-click="vm.toggleCollapse(family.DoorFamily)" aria-hidden="true" aria-expanded="false">
+                                                <i class="fa fa-plus-square-o"></i>
+                                                <i class="fa fa-minus-square-o"></i>
+                                            </a>
+                                            {{family.DoorFamily}}
+                                         </td>
+
+                                        <td class="col-md-1 center" 
+                                            ng-repeat="coreType in vm.doorDepthCoreType">
+                                            <input type="number"
+                                                   ng-model="vm.ConvenienceMargins[family.Id+ '|'+ coreType.DoorCoreId + '|'+ coreType.DoorDepthId].Margin"
+                                                   class="form-control"
+                                                   ng-change="vm.updateChildrenMargin(coreType, family) " />
+                                        </td>
+
+
+
+                                    </tr>
+
+<!-- -----------------  Family Convenience row above this  ------------------------  -->
+                                    <tr ng-repeat-end>
+                                        <td colspan="18" class="hiddenRow no-padding">
+                                            <div class="accordian-body subfamily"  uib-collapse="!vm.isExpanded[family.DoorFamily]">
+                                                <table class="table table-striped">
+                                                    <tbody>
+ <!-- --------------------------  Display the child Edge types ----------------------- -->
+                                                        <tr ng-repeat="edge in vm.doorEdgeTypes" class="accordion-toggle">
+                                                            <td class="col-md-2 center">{{edge.DoorEdge}}</td>
+
+                                                            <td class="col-md-1 center" ng-repeat="margin in vm.doorDepthCoreType">
+ <!-- --------------------------  Display the child Edge type margins ----------------------- -->
+                                                                <span ng-hide="vm.isEditMode">
+                                                                   {{vm.lookupDict[vm.selHeightId+'|'+family.Id+'|'+margin.DoorDepthId+'|'+margin.DoorCoreId+'|'+edge.Id].Margin}}
+                                                                </span>
+  <!-- --------------------------  Display the child Edge Inputs ( edit mode )  ----------------------- -->
+                                                                <input type="number"
+                                                                       ng-model= "vm.lookupDict[vm.selHeightId+'|'+family.Id+'|'+margin.DoorDepthId+'|'+margin.DoorCoreId+'|'+edge.Id].Margin"
+                                                                       class="form-control"
+                                                                       ng-show="vm.isEditMode"
+                                                                       ng-change="vm.updateChildrenMargin(margin, family, edge ) " />                                                               
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+
+ <!-- ----------------- * ------------------------  -->
+
+
+
+
+                                </tbody>
+                          </table> <!-- only table-->
+
+                        <!-- ----------------- Edit, Cancel and Save Buttons ---------------------- -->
+                        <div class="pull-right">
+                            <button type="button" ng-click="vm.toggleEditMode()"class="btn btn-primary">Edit</button>
+                            <button type="button" ng-click="vm.cancelMode()" class="btn btn-danger">Cancel</button>
+                            <button type="button" class="btn btn-success">Save</button>
+                        </div>
+
+
+
+                        <!-- ----------------- Closing Div tags ---------------------- -->
+
+                    </div>
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+        <!-- -------------------------- pagination control --------------------------------  -->
+        <div class="row">
+            <div class="col-lg-12 center">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li>
+                            <a href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">1</a>
+                        </li>
+                        <li>
+                            <a href="#">2</a>
+                        </li>
+                        <li>
+                            <a href="#">3</a>
+                        </li>
+                        <li>
+                            <a href="#">4</a>
+                        </li>
+                        <li>
+                            <a href="#">5</a>
+                        </li>
+                        <li>
+                            <a href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- /.row slab -->
+    </div>
+</div>
+<!-- /#page-content-wrapper -->
+<!-- /#wrapper -->

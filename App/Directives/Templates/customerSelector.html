@@ -1,0 +1,11 @@
+﻿<div class="row">
+    <div id="customer-select" class="btn-group col-md-4" uib-dropdown auto-close="outsideClick" is-open="vm.isOpen" on-toggle="onToggle(open)">
+        <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disabled">
+            {{vm.selectedCustomer.Name || 'Select Customer' }} <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" style="min-height: 100px; overflow-y:scroll; max-height:400px" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+            <li role="menuitem"><input ng-model="vm.customerFilter" class="form-control customerInput" /></li>
+            <li role="menuitem" ng-repeat="customer in customerArray | filter:vm.customerFilter"><a href ng-click="vm.assignSelected(customer)">{{customer.Name}}</a></li>
+        </ul>
+    </div>
+</div>

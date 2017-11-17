@@ -1,0 +1,168 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default panel-pricing">
+            <div class="panel-body">
+                
+                <div class="row">
+                    <div class="col-md-4">
+
+                    </div>
+                    <div class="col-md-3 center">
+                        <search-box model="vm.filter.SubFamilyDesc" on-change="vm.updateView()"></search-box>
+
+                    </div>
+                    <div class="col-md-5">
+                        <edit-cancel-save-buttons></edit-cancel-save-buttons>
+
+                    </div>
+                </div>
+                <hr />
+
+                <mt-spinner ng-if="vm.dataTransferring"></mt-spinner>
+                <table class="table table-striped parent" ng-if="vm.initialLoadComplete">
+                    <thead>
+                    <!-- this is the header at the top of the table-->
+                    <tr>
+                        <th>Family</th>
+                        <th class="center" colspan="{{vm.doorWidths.length}}">Slab Width</th>
+                        <th class="center">Image</th>
+                    </tr>
+                    <tr>
+                        <!-- this is the header at the top of the table with the WIDTHS -->
+                        <th class="col-md-2 no-border-top">
+
+                        </th>
+                        <th ng-repeat="width in vm.doorWidths" class="col-md-1 center subthead">{{width.Name}}</th>
+                        <th class="col-md-1 center subthead"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Family name + Product Type -->
+                    <tr ng-repeat-start="slabFamilyProductType in vm.slabFamilyStyleHeightView" class="no-bg">
+                        <td class="col-md-2 click">
+                            <a ng-click="slabFamilyProductType.original.isExpanded = !slabFamilyProductType.original.isExpanded" aria-hidden="true"
+                               aria-expanded="{{slabFamilyProductType.original.isExpanded  ? 'true' : 'false'}}">
+                                <i class="fa fa-plus-square-o"></i>
+                                <i class="fa fa-minus-square-o"></i>
+                                {{slabFamilyProductType.FamilyDesc}}
+                            </a>
+
+                        </td>
+                        <!-- Family name + Product Type ==> WIDTHS - BUTTONS -->
+                        <td ng-repeat="width in vm.doorWidths" class="col-md-1 center">
+                            <span ng-if="slabFamilyProductType.fill[width.Id]">
+                                <button ng-show="vm.isEditMode" type="button" class="btn btn-default btn-xs"
+                                        ng-click="vm.fillDoorFamily(slabFamilyProductType, width.Id, vm.stockStatuses[slabFamilyProductType.fill[width.Id].next])"
+                                        ng-class="slabFamilyProductType.fill[width.Id].cssClass">
+                                    stock
+                                </button>
+                                <span ng-hide="vm.isEditMode" ng-class="slabFamilyProductType.fill[width.Id].cssClass">stock</span>
+                            </span>
+                        </td>
+                        <td class="col-md-1 center"></td>
+                    </tr>
+
+                    <!-- Family name + Product Type -->
+                    <tr ng-repeat-end>
+                        <td colspan="{{vm.doorWidths.length + 2}}" class="hiddenRow no-padding">
+                            <div class="accordian-body subfamily" uib-collapse="!slabFamilyProductType.original.isExpanded">
+                                <table class="table table-striped" ng-if="slabFamilyProductType.original.isExpanded">
+                                    <tbody>
+                                    <!-- Sub Family name BELOW -->
+                                    <tr class="accordion-toggle" ng-repeat-start="doorSubFamily in slabFamilyProductType.DoorSubFamilies">
+                                        <td class="col-md-2 click">
+                                            <a ng-click="doorSubFamily.isExpanded = !doorSubFamily.isExpanded" aria-hidden="true"
+                                               aria-expanded="{{doorSubFamily.isExpanded  ? 'true' : 'false'}}">
+                                                <i class="fa fa-plus-square-o"></i>
+                                                <i class="fa fa-minus-square-o"></i>
+                                                {{doorSubFamily.SubFamilyDesc}}
+                                            </a>
+
+                                        </td>
+                                        <td ng-repeat="width in vm.doorWidths" class="col-md-1 center">
+                                            <span ng-if="doorSubFamily.fill[width.Id]">
+                                                <button ng-show="vm.isEditMode" type="button" class="btn btn-default btn-xs"
+                                                        ng-click="vm.fillDoorSubFamily(doorSubFamily, width.Id, vm.stockStatuses[doorSubFamily.fill[width.Id].next])"
+                                                        ng-class="doorSubFamily.fill[width.Id].cssClass">
+                                                    stock
+                                                </button>
+                                                <span ng-hide="vm.isEditMode" ng-class="doorSubFamily.fill[width.Id].cssClass">stock</span>
+                                            </span>
+                                        </td>
+                                        <td class="col-md-1 center"></td>
+                                    </tr>
+                                    <!-- Sub Family name ABOVE -->
+                                    <tr ng-repeat-end>
+                                        <td colspan="{{vm.doorWidths.length + 2}}" class="hiddenRow no-padding">
+                                            <div class="accordian-body door-style" uib-collapse="!doorSubFamily.isExpanded">
+                                                <table class="table table-striped" ng-if="doorSubFamily.isExpanded">
+                                                    <tbody>
+                                                    <!-- STYLES name BELOW -->
+                                                    <tr class="accordion-toggle" ng-repeat-start="doorStyle in doorSubFamily.Styles">
+                                                        <td class="col-md-2 click">
+                                                            <a ng-click="doorStyle.isExpanded = !doorStyle.isExpanded" aria-hidden="true"
+                                                               aria-expanded="{{doorStyle.isExpanded  ? 'true' : 'false'}}">
+                                                                <i class="fa fa-plus-square-o"></i>
+                                                                <i class="fa fa-minus-square-o"></i>
+                                                                {{doorStyle.SlabStyleDesc}}
+                                                            </a>
+
+                                                        </td>
+                                                        <td ng-repeat="width in vm.doorWidths" class="col-md-1 center">
+                                                            <span ng-if="doorStyle.fill[width.Id]">
+                                                                <button ng-show="vm.isEditMode" type="button" class="btn btn-default btn-xs"
+                                                                        ng-click="vm.fillDoorStyle(doorStyle, width.Id, vm.stockStatuses[doorStyle.fill[width.Id].next])"
+                                                                        ng-class="doorStyle.fill[width.Id].cssClass">
+                                                                    stock
+                                                                </button>
+                                                                <span ng-hide="vm.isEditMode" ng-class="doorStyle.fill[width.Id].cssClass">stock</span>
+                                                            </span>
+                                                        </td>
+                                                        <td class="col-md-1 center"></td>
+
+                                                    </tr>
+                                                    <!-- STYLES name ABOVE -->
+                                                    <tr ng-repeat-end>
+                                                        <td colspan="{{vm.doorWidths.length + 2}}" class="hiddenRow no-padding">
+                                                            <div class="accordian-body door-height" uib-collapse="!doorStyle.isExpanded">
+                                                                <table class="table table-striped" ng-if="doorStyle.isExpanded">
+                                                                    <tbody>
+                                                                    <tr class="accordion-toggle" ng-repeat="doorHeight in doorStyle.Heights">
+                                                                        <td class="col-md-2">{{doorHeight.Height}}</td>
+                                                                        <td ng-repeat="width in vm.doorWidths" class="col-md-1 center">
+                                                                            <span ng-if="vm.statusFromValue[doorHeight.widthLookup[width.Id]]">
+                                                                                <button ng-show="vm.isEditMode" type="button" class="btn btn-default btn-xs"
+                                                                                        ng-click="vm.setStock(doorHeight, width.Id, !doorHeight.widthLookup[width.Id])"
+                                                                                        ng-class="vm.statusFromValue[doorHeight.widthLookup[width.Id]].cssClass">
+                                                                                    stock
+                                                                                </button>
+                                                                                <span ng-hide="vm.isEditMode" ng-class="vm.statusFromValue[doorHeight.widthLookup[width.Id]].cssClass">stock</span>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td class="col-md-1 center"></td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+

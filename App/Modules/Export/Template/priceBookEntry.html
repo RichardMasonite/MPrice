@@ -1,0 +1,209 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 margin-20">
+                        <edit-cancel-save-buttons></edit-cancel-save-buttons>
+                        <items-per-page-selector></items-per-page-selector>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 margin-20">
+                        Filters:
+                        <button type="button" class="btn btn-default" ng-repeat="filterProperty in vm.filterPropertyOrder" ng-click="vm.openFilterModal(filterProperty)">
+                            {{vm.filterPropertyMap[filterProperty].name}}
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-repeat="filterProperty in vm.filterPropertyOrder">
+                            <div uib-alert class="alert edit col-md-1" role="alert"
+                                 ng-repeat="(selectedId, isSelected) in vm.filterPropertyMap[filterProperty].selected"
+                                 ng-show="isSelected">
+                                <button type="button" class="close" aria-label="Close"
+                                        ng-click="vm.filterPropertyMap[filterProperty].selected[selectedId] = !isSelected; vm.updateFilter()">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                {{vm.filterPropertyMap[filterProperty].name}} - {{vm.filterPropertyMap[filterProperty].list[selectedId]}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <mt-spinner ng-if="!vm.dataHasLoaded"></mt-spinner>
+                <table class="table table-striped parent" ng-if="vm.dataHasLoaded">
+                    <thead>
+                        <tr>
+                            <th colspan="4" class="col-md-4">
+                                Family / Smartpart Number / Price Book Code
+                                <div class="box pull-right">
+                                    <div class="container-2">
+                                        <span class="icon">
+                                            <i class="fa fa-search"></i>
+                                        </span>
+                                        <input ng-model="vm.textFilter" ng-change="vm.updateFilter()" ng-model-options="{ debounce: 1000 }" type="search" id="search" />
+                                    </div>
+                                </div>
+                            </th>
+                            <th class="col-md-1">Cost</th>
+                            <th class="col-md-1">Component</th>
+                            <th class="col-md-1">Adder</th>
+                            <th class="col-md-1">Dealer Margin</th>
+                            <th class="col-md-1">Distributor Margin</th>
+                            <th class="col-md-1">Multiplier</th>
+                            <th class="col-md-1">List Price</th>
+                            <th class="col-md-1">Stock Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="no-bg edit" ng-repeat-start="slabFamilyProductType in vm.slabFamilyProductTypeView">
+                            <td colspan="12">
+                                <a ng-click="vm.expandSlabFamilyProductType(slabFamilyProductType)" aria-hidden="true" aria-expanded="{{slabFamilyProductType.isExpanded ? 'true' : 'false'}}">
+                                    <i class="fa fa-plus-square-o"></i>
+                                    <i class="fa fa-minus-square-o"></i>
+                                </a>
+                                {{slabFamilyProductType.SlabFamilyDescription}} {{slabFamilyProductType.ProductTypeDescription}}
+                            </td>
+                        </tr>
+                        <tr ng-repeat-end>
+                            <td colspan="12" class="hiddenRow no-padding">
+                                <div class="accordian-body subfamily" uib-collapse="!slabFamilyProductType.isExpanded">
+                                    <mt-spinner ng-if="slabFamilyProductType.isExpanded && !slabFamilyProductType.isPopulated"></mt-spinner>
+                                    <table class="table table-striped" ng-if="slabFamilyProductType.isExpanded && slabFamilyProductType.isPopulated">
+                                        <tbody>
+                                            <tr ng-repeat-start="priceBookItem in slabFamilyProductType.MasterDataView" ng-class="{ 'edit': priceBookItem.IsAnyOverride }">
+                                                <td  class="col-md-4" colspan="4">
+                                                    <a ng-click="priceBookItem.isExpanded = !priceBookItem.isExpanded" aria-hidden="true" aria-expanded="{{priceBookItem.isExpanded ? 'true' : 'false'}}">
+                                                        <i class="fa fa-plus-square-o"></i>
+                                                        <i class="fa fa-minus-square-o"></i>
+                                                    </a>
+                                                    {{priceBookItem.SmartPartNumber}}
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <span ng-if="priceBookItem.SlabCost + priceBookItem.GlassCost">{{priceBookItem.SlabCost + priceBookItem.GlassCost | currency}}</span>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <input ng-show="vm.isEditMode" ng-model="priceBookItem.OverrideComponentCost" ng-change="vm.edited(priceBookItem)" type="number" />
+                                                    <span ng-hide="vm.isEditMode">{{priceBookItem.OverrideComponentCost | currency}}</span>
+                                                    <i ng-show="priceBookItem.IsOverrideComponentCost  &&  vm.isEditMode" class="fa fa-undo pull-right" aria-hidden="true"
+                                                       ng-click="priceBookItem.OverrideComponentCost = priceBookItem.ComponentCost; vm.edited(priceBookItem)"></i>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <input ng-show="vm.isEditMode" ng-model="priceBookItem.OverrideAdderCost" ng-change="vm.edited(priceBookItem)" type="number" />
+                                                    <span ng-hide="vm.isEditMode">{{priceBookItem.OverrideAdderCost | currency}}</span>
+                                                    <i ng-show="priceBookItem.IsOverrideAdderCost  &&  vm.isEditMode" class="fa fa-undo pull-right" aria-hidden="true"
+                                                       ng-click="priceBookItem.OverrideAdderCost = priceBookItem.AdderCost; vm.edited(priceBookItem)"></i>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <input ng-show="vm.isEditMode" ng-model="priceBookItem.OverrideDealerMargin" ng-change="vm.edited(priceBookItem)" type="number" />
+                                                    <span ng-hide="vm.isEditMode">{{priceBookItem.OverrideDealerMargin}}</span>
+                                                    <i ng-show="priceBookItem.IsOverrideDealerMargin  &&  vm.isEditMode" class="fa fa-undo pull-right" aria-hidden="true"
+                                                       ng-click="priceBookItem.OverrideDealerMargin = priceBookItem.DealerMargin; vm.edited(priceBookItem)"></i>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <input ng-show="vm.isEditMode" ng-model="priceBookItem.OverrideDistributorMargin" ng-change="vm.edited(priceBookItem)" type="number" />
+                                                    <span ng-hide="vm.isEditMode">{{priceBookItem.OverrideDistributorMargin}}</span>
+                                                    <i ng-show="priceBookItem.IsOverrideDistributorMargin  &&  vm.isEditMode" class="fa fa-undo pull-right" aria-hidden="true"
+                                                       ng-click="priceBookItem.OverrideDistributorMargin= priceBookItem.DistributorMargin; vm.edited(priceBookItem)"></i>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <input ng-show="vm.isEditMode" ng-model="priceBookItem.OverrideMultiplier" ng-change="vm.edited(priceBookItem)" type="number" />
+                                                    <span ng-hide="vm.isEditMode">{{priceBookItem.OverrideMultiplier}}</span>
+                                                    <i ng-show="priceBookItem.IsOverrideMultiplier  &&  vm.isEditMode" class="fa fa-undo pull-right" aria-hidden="true"
+                                                       ng-click="priceBookItem.OverrideMultiplier = priceBookItem.Multiplier; vm.edited(priceBookItem)"></i>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <input ng-show="vm.isEditMode" ng-model="priceBookItem.OverrideListPrice" ng-change="vm.edited(priceBookItem)" type="number" />
+                                                    <span ng-hide="vm.isEditMode">{{priceBookItem.OverrideListPrice | currency}}</span>
+                                                    <i ng-show="priceBookItem.IsOverrideListPrice  &&  vm.isEditMode" class="fa fa-undo pull-right" aria-hidden="true"
+                                                       ng-click="priceBookItem.OverrideListPrice = priceBookItem.ListPrice; vm.edited(priceBookItem)"></i>
+                                                </td>
+                                                <td class="col-md-1">
+                                                    <button ng-show="vm.isEditMode" type="button" class="btn btn-default btn-xs"
+                                                            ng-click="priceBookItem.OverrideStockStatus = !priceBookItem.OverrideStockStatus; vm.edited(priceBookItem)"
+                                                            ng-class="priceBookItem.OverrideStockStatus ? 'stock' : 'non-stock'">
+                                                        stock
+                                                    </button>
+                                                    <span ng-hide="vm.isEditMode" ng-class="priceBookItem.OverrideStockStatus ? 'stock' : 'non-stock'">stock</span>
+                                                    <i ng-show="priceBookItem.IsOverrideStockStatus && vm.isEditMode" class="fa fa-undo pull-right" aria-hidden="true"
+                                                       ng-click="priceBookItem.OverrideStockStatus = priceBookItem.StockStatus; vm.edited(priceBookItem)"></i>
+                                                </td>
+                                            </tr>
+                                            <tr ng-repeat-end>
+                                                <td colspan="12" class="hiddenRow no-padding">
+                                                    <div class="accordian-body subfamily" uib-collapse="!priceBookItem.isExpanded">
+                                                        <table class="table table-striped" ng-if="priceBookItem.isExpanded">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="12" class="no-padding">
+                                                                        <table class="table table-striped">
+                                                                            <tbody>
+                                                                                <tr class="no-bg" ng-hide="priceBookItem.GlazePriceBookCode">
+                                                                                    <td colspan="4" class="col-md-4 subsubfamily">Slab: {{priceBookItem.SlabPriceBookCode}}</td>
+                                                                                    <td class="col-md-1">{{priceBookItem.SlabCost | currency}}</td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                </tr>
+                                                                                <tr class="no-bg" ng-hide="priceBookItem.GlazePriceBookCode">
+                                                                                    <td class="4" class="subsubfamily">Glass: {{priceBookItem.GlassPriceBookCode}}</td>
+                                                                                    <td class="col-md-1">{{priceBookItem.GlassCost | currency}}</td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                </tr>
+                                                                                <tr class="no-bg" ng-show="priceBookItem.GlazePriceBookCode">
+                                                                                    <td colspan="4" class="col-md-4 subsubfamily">Factory Glazed: {{priceBookItem.GlazePriceBookCode}}</td>
+                                                                                    <td class="col-md-1">{{priceBookItem.GlazeCost | currency}}</td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                    <td class="col-md-1"></td>
+                                                                                </tr>
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+<div class="row">
+    <div class="col-lg-12 center">
+        <p class="text-right">
+            Showing {{(vm.paging.pageNumber - 1) * vm.paging.rowsPerPage + 1}}-{{(vm.paging.pageNumber * vm.paging.rowsPerPage < vm.paging.itemCount) ? vm.paging.pageNumber * vm.paging.rowsPerPage : vm.paging.itemCount}} of {{vm.paging.itemCount}}
+        </p>
+
+        <nav aria-label="Page navigation">
+            <ul uib-pagination total-items="vm.paging.itemCount" items-per-page="vm.paging.rowsPerPage " boundary-link-numbers="true" max-size="10"
+                ng-model="vm.paging.pageNumber" ng-change="vm.updateView()"></ul>
+        </nav>
+    </div>
+</div>

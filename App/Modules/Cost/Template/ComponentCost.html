@@ -1,0 +1,93 @@
+﻿<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default panel-pricing">
+            <div class="panel-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <items-per-page-selector></items-per-page-selector>
+                    </div>
+                    <div class="col-md-3 center">
+                        <item-code-search></item-code-search>
+                    </div>
+                    <div class="col-md-5">
+                        <edit-cancel-save-buttons ng-show="vm.isMasoniteDist()"></edit-cancel-save-buttons>
+                        <cost-import-buttons ng-show="vm.isMasoniteDist()"></cost-import-buttons>
+                    </div>
+                </div>
+                <hr />
+                <filter-option-buttons></filter-option-buttons>
+
+                <mt-spinner ng-if="vm.dataTransferring"></mt-spinner>
+
+                <table class="table table-striped parent" ng-if="vm.initialLoadComplete">
+                    <thead>
+                        <tr>
+                            <th class="col-lg-4">
+                                <a href ng-click="vm.sort('item.Code')">Price Book Code</a>
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-show="!vm.orderBy.reverse && vm.orderBy.expression == 'item.Code'"></span>
+                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-show="vm.orderBy.reverse && vm.orderBy.expression == 'item.Code'"></span>
+                            </th>
+                            <th class="col-lg-3">
+                                <a href ng-click="vm.sort('item.Cost')">Cost</a>
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-show="!vm.orderBy.reverse && vm.orderBy.expression == 'item.Cost'"></span>
+                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-show="vm.orderBy.reverse && vm.orderBy.expression == 'item.Cost'"></span>
+                            </th>
+
+                            <th class="col-lg-4">
+                                <a href ng-click="vm.sort('status')">Status</a>
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true" ng-show="!vm.orderBy.reverse && vm.orderBy.expression == 'status'"></span>
+                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true" ng-show="vm.orderBy.reverse && vm.orderBy.expression == 'status'"></span>
+                            </th>
+                            <th class="col-lg-1">
+                                <a ng-show="vm.isEditMode" href ng-click="vm.deleteAll()" uib-tooltip="DELETE ALL"><i class="fa fa-trash fa-lg pull-left" aria-hidden="true"></i></a>
+                                <a ng-show="vm.isEditMode" href ng-click="vm.undeleteAll()" uib-tooltip="UNDO ALL"><i class="fa fa-undo fa-lg disabled pull-left" aria-hidden="true"></i></a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="component in vm.componentView.items">
+                            <td class="col-lg-4" ng-hide="vm.isEditMode && component.status != 'Pending Deletion'">{{component.item.Code}}</td>
+                            <td class="col-lg-3" ng-hide="vm.isEditMode && component.status != 'Pending Deletion'">{{component.item.Cost | currency:"$":2}}</td>
+                            <!--<td ng-hide="vm.isEditMode && component.status != 'Pending Deletion'">{{component.item.EffectiveDate | date}}</td>-->
+                            <td class="col-lg-4" ng-show="vm.isEditMode && component.status != 'Pending Deletion'"><input ng-model="component.item.Code" ng-change="vm.edited(component)" /></td>
+                            <td class="col-lg-3" ng-show="vm.isEditMode && component.status != 'Pending Deletion'"><input step="any" ng-model="component.item.Cost" ng-change="vm.edited(component)" type="number" /></td>
+                            <!-- <td ng-show="vm.isEditMode && component.status != 'Pending Deletion'"><input ng-model="component.item.EffectiveDate" ng-change="vm.edited(component)" type="date"/></td>-->
+                            <td class="col-lg-4">{{component.status}}</td>
+                            <td class="col-lg-1">
+                                <a ng-show="vm.isEditMode" href ng-click="vm.delete(component)" uib-tooltip="DELETE"><i class="fa fa-trash fa-lg pull-left" aria-hidden="true"></i></a>
+                                <a ng-show="vm.isEditMode" href ng-click="vm.undo(component)" uib-tooltip="UNDO"><i class="fa fa-undo fa-lg disabled pull-left" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="component in vm.newComponents" ng-show="vm.isEditMode">
+                            <td class="col-lg-4" ng-hide="component.status == 'Pending Deletion'"><input ng-model="component.item.Code" ng-change="vm.newComponentEdited(component, $last)" /></td>
+                            <td class="col-lg-3" ng-hide="component.status == 'Pending Deletion'"><input step="any" ng-model="component.item.Cost" ng-change="vm.newComponentEdited(component, $last)" type="number" /></td>
+                            <!--<td ng-hide="component.status == 'Pending Deletion'"><input ng-model="component.item.EffectiveDate" ng-change="vm.newComponentEdited(component, $last)" type="date"/></td>-->
+                            <td class="col-lg-3" ng-show="component.status == 'Pending Deletion'">{{component.item.Code}}</td>
+                            <td class="col-lg-3" ng-show="component.status == 'Pending Deletion'">{{component.item.Cost | currency:"$":2}}</td>
+                            <!--<td ng-show="component.status == 'Pending Deletion'">{{component.item.EffectiveDate | date}}</td>-->
+                            <td class="col-lg-4">{{component.status}}</td>
+                            <td class="col-lg-1">
+                                <a href ng-click="vm.delete(component)" uib-tooltip="DELETE"><i ng-show="vm.isEditMode" class="fa fa-trash fa-lg pull-left" aria-hidden="true"></i></a>
+                                <a href ng-click="vm.undo(component)" uib-tooltip="UNDO"><i ng-show="vm.isEditMode" class="fa fa-undo fa-lg disabled pull-left" aria-hidden="true"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 center">
+        <p class="text-right">
+            Showing {{(vm.paging.pageNumber - 1) * vm.paging.rowsPerPage + 1}}-{{(vm.paging.pageNumber * vm.paging.rowsPerPage < vm.componentView.length) ? vm.paging.pageNumber * vm.paging.rowsPerPage : vm.componentView.length}} of {{vm.componentView.length}}
+        </p>
+
+        <nav aria-label="Page navigation">
+            <ul uib-pagination total-items="vm.componentView.length" items-per-page="vm.paging.rowsPerPage " boundary-link-numbers="true" max-size="10"
+                ng-model="vm.paging.pageNumber" ng-change="vm.updateView()"></ul>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+﻿<div class="pull-left">
+    <p class="text-align">
+        Items/Page:&shy;
+    </p>
+</div>
+<div class="pull-left">
+    <select ng-model="vm.paging.rowsPerPage " ng-options="pageChoice for pageChoice in vm.pageChoices" ng-change="vm.updateView()" class="form-control"></select>
+</div>

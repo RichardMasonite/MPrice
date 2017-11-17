@@ -1,0 +1,76 @@
+﻿<nav class="navbar navbar-default no-margin shadow">
+    <!-- navbar-top-left -->
+    <ul class="nav navbar-nav navbar-top">
+        <li ng-class="{'active' : scope.active}" id="fat-menu">
+            <a ui-sref="portal"
+               class="center"
+               role="button"
+               aria-haspopup="false"
+               aria-expanded="false">
+                <i class="fa fa-dashboard"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <!--<li class="active" id="fat-menu">-->
+        <li ui-sref-active="active" id="fat-menu">
+            <a ui-sref="pricingroot"
+               ui-sref-opts="{reload: true}"
+               class="center" role="button"
+               aria-haspopup="false"
+               aria-expanded="false">
+               <i class="fa fa-calculator"></i>
+              <span>MPrice</span></a>
+        </li>
+        <li ui-sref-active="active" id="fat-menu" ng-if="isMasoniteDist">
+            <a ui-sref="export"
+               class="center" role="button"
+               aria-haspopup="false"
+               aria-expanded="false">
+                <i class="fa fa-rocket"></i>
+                <span>Export</span>
+            </a>
+        </li>
+        <li ng-class="{'active' : scope.active}" id="fat-menu">
+            <a href ="mailto:max@masonite.com?Subject=MPrice%20Support%20Request"
+               class="center"
+               role="button"
+               aria-haspopup="false"
+               aria-expanded="false">
+                <i class="fa fa-envelope"></i>
+                <span>Contact</span>
+            </a>
+        </li>
+    </ul>
+    <!-- /navbar-top-left -->
+
+    <a class="navbar-brand" ui-sref="portal"></a>
+    <ul class="nav navbar-nav navbar-right">
+        <li id="fat-menu" class="dropdown">
+            <a href="#" class="dropdown-toggle center" id="drop3" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-user-o pull-right"></i><div class="pull-right" ng-hide="isMasoniteDist">{{distributor.Name}}</div></a>
+            <ul class="dropdown-menu" aria-labelledby="drop3">
+                <li><a href ng-click="vm.simulateExpiredABT()">Expired ABT</a></li>
+                <li><a href ng-click="vm.simulateExpiredUserToken()">Expired User Token</a></li>
+                <li><a href ng-click="logoutUser()">Logout</a></li>
+            </ul>
+        </li>
+    </ul>
+    <!-- /.navbar-top-right -->
+</nav>
+<!-- /navigation -->
+<!-- calculator navigation -->
+<nav class="navbar navbar-default no-margin">
+    <div class="container-fluid no-padding">
+        <div class="col-md-8 no-padding">
+            <ul class="nav navbar-nav">
+                <li ui-sref-active="active"><a ui-state="'cost' + stateSuffix" ui-state-params="parameters" ui-state-opts="{reload: true}">Costs</a></li>
+                <li ui-sref-active="active"><a ui-state="'margin' + stateSuffix" ui-state-params="parameters" ui-state-opts="{reload: true}">Margins</a></li>
+                <li ui-sref-active="active"><a ui-state="'product' + stateSuffix" ui-state-params="parameters" ui-state-opts="{reload: true}">Products</a></li>
+                <li ui-sref-active="active"><a ui-state="'priceBook' + stateSuffix" ui-state-params="parameters" ui-state-opts="{reload: true}">Price Book</a></li>
+            </ul>
+        </div>
+        <div class="col-md-4" ng-show="isMasoniteDist">
+            <distributor-selector></distributor-selector>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,43 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$close()"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="modal-title">{{vm.header}} REJECTION LIST</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <div ng-hide="vm.error" class="tab-content clearfix margin-top-25">
+            <table class="table table-striped parent" id="tableDisplay">
+                <thead fsm-sticky-header scroll-body="'#tableDisplay'">
+                    <tr>
+                        <th class="col-md-2">Price Book Code</th>
+                        <th class="col-md-2">Price</th>
+                        <th class="col-md-2">Multiplier</th>
+                        <th class="col-md-2">Cost</th>
+                        <th class="col-md-2">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="invalidItem in vm.invalidItems" class="danger">
+                        <td class="col-md-2">{{invalidItem.Code}}</td>
+                        <td class="col-md-2">{{invalidItem.Price | currency}}</td>
+                        <td class="col-md-2">{{invalidItem.Multiplier}}</td>
+                        <td class="col-md-2">{{invalidItem.Cost | currency}}</td>
+                        <td  class="col-md-2">Invalid</td>
+                    </tr>
+                    <tr ng-repeat="duplicateItem in vm.duplicateItems" class="warning">
+                        <td class="col-md-2">{{duplicateItem.Code}}</td>
+                        <td class="col-md-2">{{duplicateItem.Price | currency}}</td>
+                        <td class="col-md-2">{{duplicateItem.Multiplier}}</td>
+                        <td class="col-md-2">{{duplicateItem.Cost | currency}}</td>
+                        <td class="col-md-2">Duplicate</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="btn btn-danger" data-dismiss="modal" aria-label="Cancel" ng-click="$close()">CLOSE</button>
+        </div>
+    </div>
+</div>

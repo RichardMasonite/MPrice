@@ -1,0 +1,130 @@
+﻿<!-- Page Content -->
+<div id="page-content-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default panel-pricing">
+                <div class="panel-body">
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+ 
+                        </div>
+                        <div class="col-md-3 center">
+                            <search-box model="vm.filter.SubFamilyName" on-change="vm.updateView()"></search-box>
+
+                        </div>
+                        <div class="col-md-5">
+                            <edit-cancel-save-buttons></edit-cancel-save-buttons>
+
+                        </div>
+                    </div>
+                    
+                    <hr />
+
+                    <div>
+                        <mt-spinner ng-if="vm.dataTransferring"></mt-spinner>
+
+                        <table class="table table-striped parent" ng-if="vm.initialLoadComplete">
+                            <thead>
+                                <!--  this is where the column headings are created-->
+                                <tr>
+                                    <th>Family</th>
+                                    <th class="center" colspan="3">Glazed Units</th>
+                                    <th class="center" colspan="3">Non Glazed Units</th>
+                                    <th class="col-md-1 subthead"></th>
+                                </tr>
+                                <!--  this is where the column headings are created-->
+                                <tr>
+                                    <th class="col-md-4 no-border-top">
+                                   
+                                    </th>
+                                    <th class="col-md-1 subthead" ng-repeat="heights in vm.slabHeights">{{heights.Name}}</th>
+                                    <th class="col-md-1 subthead" ng-repeat="heights in vm.slabHeights">{{heights.Name}}</th>
+                                    <th class="col-md-1 subthead"></th>
+                                </tr>
+                                <!--  this is where the Search and defined Heights  -->
+                            </thead>
+                            <tbody>
+                                <!-- FamilyName and ProductType and convenience row BELOW -->
+                                <tr ng-repeat-start="family in vm.dccSlabFamiliesView">
+                                    <td class="col-md-4 click">
+                                        <a ng-click="family.original.isExpanded = !family.original.isExpanded" aria-hidden="true"
+                                           aria-expanded="{{family.original.isExpanded ? 'true' : 'false'}}">
+                                            <i class="fa fa-plus-square-o"></i>
+                                            <i class="fa fa-minus-square-o"></i>
+                                            {{family.FamilyProductType}}
+                                        </a>
+                                       
+                                    </td>
+                                    <td class="col-md-1 subthead" ng-repeat="heights in vm.slabHeights">
+                                        <span ng-hide="vm.isEditMode">{{family.subFamilyList.GlazeCostList.Cost|currency:"$":2}}</span>
+                                        <input step="any" type="number"
+                                               ng-change="vm.fillSlabFamily(family, heights, 'GlazeCost')"
+                                               ng-model="vm.costChanges[heights.Id][family.FamilyProductType].GlazeCost"
+                                               ng-show="vm.isEditMode">
+                                    </td>
+                                  
+                                    <td class="col-md-1 subthead" ng-repeat="heights in vm.slabHeights">
+                                        <span ng-hide="vm.isEditMode">{{family.subFamilyList.GlazeCostList.Cost|currency:"$":2}}</span>
+                                        <input step="any" type="number"
+                                               ng-show="vm.isEditMode"
+                                               ng-change="vm.fillSlabFamily(family, heights, 'NonGlazeCost')"
+                                               ng-model="vm.costChanges[heights.Id][family.FamilyProductType].NonGlazeCost">
+                                    </td>
+                                    <td class="col-md-1"></td>
+                                </tr>
+                                <!-- FamilyName & ProductType and convenience Row ABOVE -->
+                                <tr ng-repeat-end>
+                                    <!-- ///    ----------------------------   ///   -----------------------------   ///   ----------------------------   /// -->
+                                    <td class="hiddenRow no-padding">
+                                        <div class="accordion-body subfamily" uib-collapse="!family.original.isExpanded">
+                                            <table class="table table-striped" ng-if="family.original.isExpanded">
+                                                <tbody>
+                                                <tr class="accordion-toggle"
+                                                    ng-repeat="slabSubFamily in family.subFamilyList">
+                                                    <td class="col-md-1 form-group">{{slabSubFamily.SubFamilyName}}</td>
+                                                    
+                                                    <td ng-repeat="heights in vm.slabHeights" class="col-md-1">
+                                                         <span ng-hide="vm.isEditMode" ng-if="slabSubFamily.costLookup[heights.Id]">
+                                                            {{slabSubFamily.costLookup[heights.Id].GlazeCost|currency:"$":2}}
+
+                                                         </span>
+                                                        <input ng-show="vm.isEditMode && slabSubFamily.costLookup[heights.Id]"
+                                                               ng-change="vm.markThatChange(slabSubFamily,heights.Id)"
+                                                               ng-model="slabSubFamily.costLookup[heights.Id].GlazeCost"
+                                                               step="any"
+                                                               type="number" />                                                        
+
+                                                    </td>
+                                                    <td ng-repeat="heights in vm.slabHeights" class="col-md-1">
+                                                        <span  ng-hide="vm.isEditMode" ng-if="slabSubFamily.costLookup[heights.Id]">
+                                                           {{slabSubFamily.costLookup[heights.Id].NonGlazeCost|currency:"$":2}}
+
+                                                        </span>
+                                                        <input ng-show="vm.isEditMode && slabSubFamily.costLookup[heights.Id]"
+                                                               ng-change="vm.markThatChange(slabSubFamily,heights.Id)"
+                                                               ng-model="slabSubFamily.costLookup[heights.Id].NonGlazeCost"
+                                                               step="any"
+                                                               type="number" />
+
+                                                    </td>                                                    
+                                                    <td class="col-md-1"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <!-- ///  ---------------------------  ///  -------------------------------------  ///   -----------------------------   /// -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+
+    <!-- /.row slab -->
+</div>

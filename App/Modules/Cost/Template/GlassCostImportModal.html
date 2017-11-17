@@ -1,0 +1,63 @@
+﻿<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" ng-click="$dismiss()"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title" id="modal-title">PASTE NEW DATA FROM EXCEL</h3>
+    </div>
+    <div class="modal-body" id="modal-body">
+        <mt-spinner ng-if="vm.dataHasLoaded"></mt-spinner>
+
+        <div ng-hide="vm.error" class="tab-content clearfix margin-top-25">
+            <table class="table table-striped parent" id="tableDisplay">
+                <thead fsm-sticky-header scroll-body="'#tableDisplay'">
+                    <tr>
+                        <th class="col-md-2" ng-repeat="columnSelection in vm.columnSelections track by $index">
+                            <select ng-model="vm.columnSelections[$index]"
+                                    ng-change="vm.setStatuses()"
+                                    ng-options="columnChoice as columnChoice.display for columnChoice in vm.columnChoices"></select>
+                        </th>
+                        <th class="col-md-1">
+                            Status
+                        </th>
+                        <th class="col-md-2">
+                            Original Cost
+                        </th>
+                        <th class="col-md-1">
+                            Include
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="importRow in vm.importRowsWithStatus">
+                        <td  class="col-md-2 center" ng-repeat="importColumn in importRow.columns track by $index">
+                            <span ng-show="vm.columnSelections[$index].column != 'Cost' || importRow.status != 'Changed' || importRow.importItem.Cost == importRow.originalItem.item.Cost">{{importColumn}}</span>
+                            <em ng-show="vm.columnSelections[$index].column == 'Cost' && importRow.status == 'Changed' && importRow.importItem.Cost > importRow.originalItem.item.Cost" class="text-success">
+                                {{importColumn}}
+                                <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+                            </em>
+                            <em ng-show="vm.columnSelections[$index].column == 'Cost' && importRow.status == 'Changed' && importRow.importItem.Cost < importRow.originalItem.item.Cost" class="text-danger">
+                                {{importColumn}}
+                                <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+                            </em>
+                        </td>
+                        <td class="col-md-1 center">
+                            {{importRow.status}}
+                        </td>
+                        <td class="col-md-2 center">
+                            {{importRow.originalItem.item.Cost | currency}}
+                        </td>
+                        <td class="col-md-1 center">
+                            <input type="checkbox" ng-model="importRow.include" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button class="btn btn-danger" data-dismiss="modal" aria-label="Cancel" ng-click="$dismiss()">CANCEL</button>
+            <button class="btn btn-success" ng-click="vm.save()">SAVE SELECTED</button>
+        </div>
+    </div>
+</div>

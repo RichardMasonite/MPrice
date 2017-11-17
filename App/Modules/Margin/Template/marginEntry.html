@@ -1,0 +1,163 @@
+﻿
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                
+
+                <div class="row">
+                    <div class="col-md-4">
+ 
+                    </div>
+                    <div class="col-md-3 center">
+                        <search-box model="vm.filter.SlabSubfamilyName" on-change="vm.updateView()"></search-box>
+
+                    </div>
+                    <div class="col-md-5">
+                        <edit-cancel-save-buttons></edit-cancel-save-buttons>
+
+                    </div>
+                </div>
+                <hr />
+                <mt-spinner ng-if="vm.dataTransferring"></mt-spinner>
+                <table class="table table-striped" ng-if="vm.initialLoadComplete">
+                    <thead>
+                    <tr>
+                        <th>
+                            Family
+                        </th>
+
+                        <th class="center" colspan="{{vm.distributorSteps}}" ng-repeat="glassFamily in vm.glassFamilies">{{glassFamily}}</th>
+                        <th class="center" colspan="{{vm.glassFamilies.length}}">Family Multipliers</th>
+                    </tr>
+                    <tr>
+                        <th class="col-md-2 no-border-top"></th>
+                        <th class="col-md-1 subthead" ng-repeat-start="glassFamily in vm.glassFamilies" ng-if="vm.distributorSteps > 1">Dealer</th>
+                        <th class="col-md-1 subthead" ng-repeat-end>Distributor</th>
+                        <th class="col-md-1 subthead" ng-repeat="glassFamily in vm.glassFamilies">{{glassFamily}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="no-bg" ng-repeat-start="slabFamilyProductType in vm.slabFamilyProductTypeView">
+                        <td class="col-md-2 click">
+                            <a ng-click="slabFamilyProductType.original.isExpanded = !slabFamilyProductType.original.isExpanded" aria-hidden="true"
+                               aria-expanded="{{slabFamilyProductType.original.isExpanded ? 'true' : 'false'}}">
+                                <i class="fa fa-plus-square-o"></i>
+                                <i class="fa fa-minus-square-o"></i>
+                                {{slabFamilyProductType.SlabFamilyName}} {{slabFamilyProductType.ProductTypeName}}
+                            </a>
+
+                        </td>
+
+                        <td class="col-md-1" ng-repeat-start="glassFamily in vm.glassFamilies" ng-if="vm.distributorSteps > 1">
+                            <span ng-hide="vm.isEditMode">
+                                {{slabFamilyProductType[glassFamily + 'DealerMargin']}}
+                            </span>
+                            <input ng-model="slabFamilyProductType[glassFamily + 'DealerMargin']"
+                                   ng-show="vm.isEditMode"
+                                   ng-change="vm.fillDoorFamily(slabFamilyProductType, glassFamily, 'DealerMargin')"
+                                   step="any"
+                                   type="number"/>
+                        </td>
+                        <td class="col-md-1" ng-repeat-end>
+                            <span ng-hide="vm.isEditMode">
+                                {{slabFamilyProductType[glassFamily + 'DistributorMargin']}}
+                            </span>
+                            <input ng-model="slabFamilyProductType[glassFamily + 'DistributorMargin']"
+                                   ng-show="vm.isEditMode"
+                                   ng-change="vm.fillDoorFamily(slabFamilyProductType, glassFamily, 'DistributorMargin')"
+                                   step="any"
+                                   type="number"/>
+                        </td>
+                        <td class="col-md-1" ng-repeat="glassFamily in vm.glassFamilies">
+                            <span ng-hide="vm.isEditMode">
+                                {{slabFamilyProductType[glassFamily + 'FamilyMultiplier']}}
+                            </span>
+                            <input ng-model="slabFamilyProductType[glassFamily + 'FamilyMultiplier']"
+                                   ng-show="vm.isEditMode"
+                                   ng-change="vm.fillDoorFamily(slabFamilyProductType, glassFamily, 'FamilyMultiplier')"
+                                   step="any"
+                                   type="number"/>
+                        </td>
+                    </tr>
+                    <tr ng-repeat-end>
+                        <td colspan="10" class="hiddenRow no-padding">
+                            <div class="accordian-body subfamily" uib-collapse="!slabFamilyProductType.original.isExpanded">
+                                <!-- ng-if here is to limit the number of edit boxes on the screen at one time. Otherwise, Angular gets laggy. -->
+                                <table class="table table-striped" ng-if="slabFamilyProductType.original.isExpanded">
+                                    <tbody>
+                                    <tr class="accordion-toggle"
+                                        ng-repeat="slabSubFamily in slabFamilyProductType.Subfamilies"
+                                        ng-class="{ 'edit': slabSubFamily.IsAnyOverride }">
+                                        <td class="col-md-2">{{slabSubFamily.SlabSubfamilyName}}</td>
+
+                                        <td class="col-md-1" ng-repeat-start="glassFamily in vm.glassFamilies" ng-if="vm.distributorSteps > 1">
+                                            <span ng-hide="vm.isEditMode">
+                                                {{slabSubFamily[glassFamily + 'DealerMargin']}}
+                                            </span>
+                                            <input ng-model="slabSubFamily[glassFamily + 'DealerMargin']"
+                                                   ng-show="vm.isEditMode"
+                                                   ng-change="vm.marginChanged(slabSubFamily, glassFamily)"
+                                                   step="any"
+                                                   type="number"/>
+                                        </td>
+                                        <td class="col-md-1" ng-repeat-end>
+                                            <span ng-hide="vm.isEditMode">
+                                                {{slabSubFamily[glassFamily + 'DistributorMargin']}}
+                                            </span>
+                                            <input ng-model="slabSubFamily[glassFamily + 'DistributorMargin']"
+                                                   ng-show="vm.isEditMode"
+                                                   ng-change="vm.marginChanged(slabSubFamily, glassFamily)"
+                                                   step="any"
+                                                   type="number"/>
+                                        </td>
+                                        <td class="col-md-1" ng-repeat="glassFamily in vm.glassFamilies">
+                                            <span ng-hide="vm.isEditMode">
+                                                {{slabSubFamily[glassFamily + 'FamilyMultiplier']}}
+                                            </span>
+                                            <input ng-model="slabSubFamily[glassFamily + 'FamilyMultiplier']"
+                                                   ng-show="vm.isEditMode"
+                                                   ng-change="vm.multiplierChanged(slabSubFamily, glassFamily)"
+                                                   step="any"
+                                                   type="number"/>
+                                            <i class="fa fa-undo pull-right" aria-hidden="true"
+                                               ng-show="slabSubFamily[glassFamily + 'Override'] && vm.isEditMode"
+                                               ng-click="vm.isEditMode && vm.marginChanged(slabSubFamily, glassFamily)"></i>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<!--<div class="row">
+    <div class="col-lg-12">
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li>
+                    <a href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li>
+                    <a href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>-->
