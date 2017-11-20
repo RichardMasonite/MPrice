@@ -1,0 +1,912 @@
+/******************
+Colors
+******************/
+
+$color_green: #92C83E;
+$color_gray: #CCCCCC;
+$color_font: #555555;
+$color_gray_navbarborder: #E7E7E7;
+$color_edit: #337ab7;
+$color_stock: #428BCA;
+$bg_color_transparent: transparent;
+$bg_color_white: #ffffff;
+$bg_color_lightgray: #f9f9f9;
+$color_danger: #c9302c;
+$bg_color_thead: #F7F7F7;
+$bg_color_subthead: #F1F1F1;
+
+/******************
+Mixins
+******************/
+
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+  border-radius: $radius;
+  background-clip: padding-box;
+}
+
+@mixin transition($transition) {
+  -webkit-transition: all $transition ease;
+  -moz-transition: all $transition ease;
+  -ms-transition: all $transition ease;
+  -o-transition: all $transition ease;
+  transition: all $transition ease;
+}
+
+@mixin space($property, $location, $value) {
+  #{$property}-#{$location}: $value
+}
+
+@mixin rotate($deg) {
+  -ms-filter: "progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.green {
+  color: $color_green
+}
+
+
+/******************
+Basics
+******************/
+
+body,
+html,
+.btn-default {
+  color: $color_font;
+  font-size: 12px
+}
+
+
+/******************
+Navigation
+******************/
+
+.navbar {
+  @include border-radius(0);
+  border: none;
+  border-bottom: 1px solid $color_gray_navbarborder;
+  min-height: auto;
+  &:first-of-type {
+    @include space(margin, bottom, 0)
+  }
+  .navbar-right {
+    @include space(margin, right, 0);
+    .dropdown-toggle {
+      padding: 1.6rem 2rem;
+    }
+  }
+}
+
+.navbar-nav {
+  >li {
+    min-width: 6rem;
+  }
+  li {
+    a {
+      border-right: 1px solid $color_gray;
+      text-align: left
+    }
+  }
+  .fa-user-o {
+    margin-left: 1rem;
+    line-height: 1.2;
+    font-size: 15px;
+  }
+}
+
+.navbar-brand {
+  background-image: url("Images/masonite-icon.png");
+  background-position: 50%;
+  background-repeat: no-repeat;
+  width: 24px;
+  left: 49%;
+  position: absolute;
+  display: block;
+  margin-top: 0.4rem;
+}
+
+.navbar-top {
+  >li {
+    min-width: 5.5rem;
+  }
+  #fat-menu {
+    a {
+      max-width: 5.5rem;
+      max-height: 5rem;
+      overflow: hidden;
+      padding: 2rem 0;
+      @include transition(.55s);
+      &:hover {
+        max-width: 20rem;
+        @include transition(.55s);
+      }
+      span {
+        @include space(margin,
+        right,
+        1rem);
+        font-size: 75%;
+        text-transform: uppercase
+      }
+    }
+    .fa {
+      @include space(margin,
+      right,
+      1rem);
+      @include space(margin,
+      bottom,
+      2rem);
+      @include space(margin,
+      left,
+      2rem);
+    }
+  }
+}
+
+#bs-example-navbar-collapse-1 {
+  padding-left: 0;
+}
+
+.panel-pricing {
+  border-top: 0px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+
+/******************
+Search Icon hover effect
+******************/
+
+.container-2 {
+  //  width: 50px;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+  input#search {
+    height: 30px;
+    border: 1px solid $color_gray;
+    font-size: 10pt;
+    float: right;
+    color: $color_font;
+    @include space(padding,
+    left,
+    10px);
+    @include border-radius(4px);
+    @include transition(.55s);
+    &:focus,
+    &:active {
+      outline: none;
+    }
+  }
+  .icon {
+    font-size: inherit;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    @include space(margin,
+    top,
+    5px);
+    z-index: 1;
+    color: $color_font;
+  }
+  &:hover {
+    .icon {
+      color: darken($color_font, 4);
+    }
+  }
+}
+
+.container-1 {
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+  input#search {
+    border: 1px solid $color_gray;
+    font-size: 10pt;
+    color: $color_font;
+    padding: 6px 12px;
+    @include border-radius(4px);
+    @include transition(.55s);
+    width: 100%;
+    &::placeholder {
+      color: $color_gray
+    }
+  }
+  .icon {
+    font-size: 16px;
+    position: absolute;
+    right: 10px;
+    @include space(margin,
+    top,
+    5px);
+    z-index: 1;
+    color: $color_font;
+  }
+  &:hover {
+    input#search {}
+    .icon {
+      color: darken($color_font, 4);
+    }
+  }
+}
+
+
+/******************
+Login Page
+******************/
+
+.login {
+  background-color: $bg_color_lightgray;
+  .login-panel {
+    @include space(margin,
+    top,
+    25%);
+  }
+  .panel-heading {
+    background-color: $bg_color_white;
+    border-color: $bg_color_transparent;
+    img {
+      display: block;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+  }
+  .forgotpass {
+    display: block;
+    @include space(margin,
+    top,
+    1rem)
+  }
+}
+
+
+/******************
+Select & Form adjustments
+******************/
+
+#customer-select,
+.bootstrap-select {
+  @include space(margin,
+  top,
+  .7rem);
+  ul {
+    &.dropdown-menu {
+      margin-left: 15px;
+      min-width: 95%;
+      input.ng-touched {
+        margin: 0 .5rem;
+        width: 98%;
+      }
+    }
+  }
+}
+
+.importer {
+  display: inline-block;
+  @include space(margin,
+  right,
+  2rem);
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .inputfile+label {
+    border: 1px solid $color_gray;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: text-top;
+    padding: 8px 20px;
+    line-height: 1.428571;
+    border-radius: 4px;
+    color: $color_font;
+    margin-bottom: 0;
+    max-width: 80%;
+    margin: -0.8rem 0rem;
+    text-transform: uppercase
+  }
+  .inputfile:focus+label,
+  .inputfile+label:hover {
+    background-color: $color_font;
+    color: $bg_color_white
+  }
+  .inputfile+label {
+    cursor: pointer;
+  }
+  .inputfile:focus+label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+  }
+}
+
+
+/******************
+Portal
+******************/
+
+.hero {
+  background: url(Images/headerbanner.jpg) no-repeat center center;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 800px;
+  .text-center {
+    margin: 0 auto
+  }
+  h2 {
+    color: $bg_color_white;
+    @include space(margin,
+    bottom,
+    1rem);
+    letter-spacing: .1rem;
+    &.big {
+      font-size: 30rem;
+      margin-bottom: 0
+    }
+  }
+  .lead {
+    color: $bg_color_white
+  }
+}
+
+.four-oh-four {
+  min-height: 5rem;
+}
+
+.btn-circle.btn-xl {
+  font-size: 12px;
+  width: 100px;
+  height: 120px;
+  line-height: 1.33;
+  @include border-radius(8px);
+  @include space(margin,
+  bottom,
+  .5rem);
+  padding: 0
+}
+
+p.portal {
+  max-width: 100px;
+  display: inline-block;
+  margin: 2rem;
+}
+
+.portal {
+  i {
+    color: $color_green;
+    font-size: 4rem;
+    display: block;
+    @include space(margin,
+    bottom,
+    1rem);
+  }
+  a {
+    color: $color_green;
+  }
+}
+
+
+/******************
+Tables
+******************/
+
+.table {
+  >thead {
+    >tr {
+      >th {
+        vertical-align: top;
+        vertical-align: middle;
+      }
+      >td {
+        vertical-align: middle;
+      }
+    }
+  }
+  >tbody {
+    >tr {
+      >td {
+        vertical-align: middle
+      }
+    }
+  }
+  @include space(margin,
+  top,
+  10px);
+  .fa-plus-square-o,
+  .fa-minus-square-o {
+    @include space(padding,
+    right,
+    .5rem);
+    &:hover {
+      cursor: pointer
+    }
+  }
+  input {
+    display: inline-block;
+    width: 80%
+  }
+  .subfamily {
+    .fa-plus-square-o,
+    .fa-minus-square-o {
+      @include space(margin,
+      left,
+      1rem);
+    }
+    .subfamily {
+      .fa-plus-square-o,
+      .fa-minus-square-o {
+        @include space(margin,
+        left,
+        2rem);
+      }
+    }
+    .fa-picture-o {
+      @include space(margin,
+      left,
+      1rem);
+      @include space(margin,
+      right,
+      1rem);
+    }
+    .accordion-toggle td:nth-of-type(1) {
+      @include space(padding,
+      left,
+      2rem)
+    }
+    .subfamily .col-md-2:first-of-type,
+    .subfamily .col-md-3:first-of-type {
+      @include space(padding,
+      left,
+      2rem)
+    }
+    .subfamily {
+      td.subsubfamily:first-of-type {
+        @include space(padding,
+        left,
+        4rem)
+      }
+    }
+    .subsubfamily {
+        td.subsubfamily:first-of-type {
+          @include space(padding,
+          left,
+          4rem)
+        }
+    }
+    .table-bordered {
+      border-left: 0 hidden transparent;
+      border-right: 0 hidden transparent;
+      border-bottom: 0 hidden transparent;
+      & tr>td {
+        border-left: 0 hidden transparent;
+        border-right: 0 hidden transparent;
+      }
+    }
+    .edit {
+      td:first-of-type:after {
+        color: $color_edit;
+        content: "\f06a";
+        float: right;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        line-height: 1.3;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    }
+  }
+  a[aria-expanded=true] .fa-plus-square-o {
+    display: none;
+  }
+  a[aria-expanded=false] .fa-minus-square-o {
+    display: none;
+  }
+  .accordion-toggle {
+    .fa-level-up {
+      @include space(margin,
+      left,
+      20px);
+      @include space(margin,
+      right,
+      5px);
+    }
+  }
+}
+
+td.click {
+  a {
+    display: inline-block;
+    cursor: pointer;
+    color: $color_font;
+    text-decoration: none;
+  }
+  i {
+    color: $color_edit
+  }
+}
+
+.table-bordered {
+  .form-group {
+    @include space(margin,
+    bottom,
+    0);
+  }
+}
+
+.subfamily {
+  td {
+    &:nth-of-type(even) {
+      background-color: darken($bg_color_lightgray, 2);
+    }
+  }
+  .no-bg td {
+    &:nth-of-type(even) {
+      background-color: darken($bg_color_white, 2);
+    }
+  }
+  .edit td {
+    &:nth-of-type(even) {
+      background-color: transparent !important;
+    }
+  }
+}
+
+.hiddenRow {
+  table.table-striped {
+    @include space(margin,
+    top,
+    0);
+    @include space(margin,
+    bottom,
+    0);
+  }
+  .table-striped {
+    >tbody {
+      >tr {
+        &:nth-of-type(even) {
+          background-color: $bg_color_lightgray;
+        }
+      }
+    }
+  }
+}
+
+thead {
+  background-color: $bg_color_thead;
+}
+
+.subthead {
+  background-color: $bg_color_subthead;
+  font-weight: normal;
+}
+
+.parent {
+  >tbody {
+    display: block;
+    height: 400px;
+    overflow: auto;
+    tr {
+      display: table;
+      width: 100%;
+    }
+  }
+  >thead {
+    display: table;
+    width: 100%;
+  }
+}
+
+
+/******************
+Buttons, Icons & Co
+******************/
+
+span,
+.btn {
+  &.non-stock,
+  &.stock-varies,
+  &.stock {
+    border: 0px hidden transparent;
+    border-radius: 3px;
+    color: $bg_color_white;
+    display: inline-block;
+    font-size: 75%;
+    margin: .2rem;
+    padding: 5px;
+    text-align: center;
+    text-transform: uppercase;
+    &:after {
+      font: normal normal normal 11px/1 FontAwesome;
+      @include space(margin,
+      left,
+      .6rem);
+    }
+    &.read {
+      background-color: transparent;
+      border-color: $color_gray;
+      cursor: default;
+    }
+  }
+  &.non-stock {
+    background-color: rgba($color_danger, .3);
+    &:after {
+      content: "\f10c";
+    }
+  }
+  &.stock-varies {
+    background-color: lighten($color_stock, 14);
+    &:after {
+      content: "\f042";
+    }
+  }
+  &.stock {
+    background-color: $color_stock;
+    &:after {
+      content: "\f111";
+    }
+  }
+}
+
+.fa-trash {
+  color: $color_danger
+}
+
+.filter {
+  .btn {
+    @include space(margin,
+    bottom,
+    4px)
+  }
+  span {
+    display: inline-block;
+    @include space(margin,
+    right,
+    1rem);
+  }
+}
+
+.alert.edit {
+  padding: 5px;
+  @include space(margin,
+  right,
+  .5rem);
+  .close {
+    right: 0;
+  }
+}
+
+.edit {
+  background-color: rgba($color_edit, 0.1) !important;
+  .fa-undo {
+    @extend .fa-pencil;
+    @include space(margin,
+    top,
+    .6rem);
+    color: inherit;
+  }
+}
+
+.fa-pencil.edit {
+  background-color: transparent !important;
+  color: rgba($color_edit, 1);
+}
+
+hr {
+  @include space(margin,
+  top,
+  5px);
+  @include space(margin,
+  bottom,
+  15px);
+}
+
+
+/******************
+Typo
+******************/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: uppercase;
+  font-weight: 200;
+}
+
+.text-muted {
+  color: $color_gray;
+}
+
+.extra-border {
+  border-right: 3px solid $color_gray !important;
+}
+
+tr {
+  >td,
+  >th {
+    &:first-of-type {
+      min-width: 150px;
+      width: 200px;
+    }
+  }
+}
+
+
+/******************
+Helper Classes
+******************/
+
+.margin {
+  margin: 1rem;
+}
+
+.margin-row {
+  @include space(margin,
+  top,
+  1rem);
+  @include space(margin,
+  bottom,
+  1rem);
+}
+
+.margin-20 {
+  margin: 0 0 20px;
+}
+
+.margin-bottom-sm {
+  @include space(margin,
+  bottom,
+  1.5rem);
+}
+
+.shadow {
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+}
+
+.text-align {
+  margin: 0.6rem 0;
+}
+
+.center {
+  text-align: center;
+}
+
+.vertical-center {
+  min-height: 100%;
+  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh;
+  /* These two lines are counted as one :-)       */
+  display: flex;
+  align-items: center;
+}
+
+.border-left {
+  border-left: 1px solid $color_gray;
+}
+
+.border-right {
+  border-right: 1px solid $color_gray;
+}
+
+.no-border-top {
+  border-top: 0px hidden transparent !important;
+}
+
+.no-padding-lr {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.no-padding {
+  padding: 0 !important;
+  margin: 0;
+  @include space(margin,
+  top,
+  0);
+}
+
+.padding {
+  padding: 1rem;
+}
+
+.no-bg {
+  background-color: $bg_color_transparent !important;
+}
+
+.bg {
+  background-color: $bg_color_lightgray;
+}
+
+
+/******************
+Spinner
+******************/
+
+.loader {
+  position: relative;
+  margin: 0 auto;
+  display: block;
+  width: 30px;
+  height: 30px;
+  @include space(margin,
+  bottom,
+  2rem);
+  @include space(margin,
+  top,
+  2rem);
+  .box {
+    width: 45%;
+    height: 45%;
+    background: rgba($color_font, 0.7);
+    opacity: 0;
+    -webkit-filter: blur(0px);
+    animation: load 1s linear infinite;
+  }
+}
+
+
+/******************
+Styleguide
+******************/
+
+.colors {
+  padding: 0;
+  min-height: 10rem;
+  &.green {
+    background-color: $color_green
+  }
+  &.gray {
+    background-color: $color_gray
+  }
+  &.font {
+    background-color: $color_font
+  }
+  &.gray_navbarborder {
+    background-color: $color_gray_navbarborder
+  }
+  &.edit {
+    background-color: $color_edit
+  }
+  &.stock {
+    background-color: $color_stock;
+    font-size: 100%;
+    text-transform: none;
+    &:after {
+      content: ''
+    }
+  }
+  &.lightgray {
+    background-color: $bg_color_lightgray
+  }
+  &.danger {
+    background-color: $color_danger
+  }
+  &.thead {
+    background-color: $bg_color_thead
+  }
+  &.subthead {
+    background-color: $bg_color_subthead
+  }
+  .white {
+    margin: 0;
+    background-color: rgba($bg_color_white, .8);
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    border-top: 1px dotted $bg_color_white;
+  }
+}
