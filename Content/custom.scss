@@ -8,6 +8,7 @@ $color_font: #555555;
 $color_gray_navbarborder: #E7E7E7;
 $color_edit: #337ab7;
 $color_stock: #428BCA;
+$color_info: #5bc0de;
 $bg_color_transparent: transparent;
 $bg_color_white: #ffffff;
 $bg_color_lightgray: #f9f9f9;
@@ -638,13 +639,13 @@ span,
     }
   }
   &.non-stock {
-    background-color: rgba($color_danger, .3);
+    background-color: rgba($color_danger, 1);
     &:after {
       content: "\f10c";
     }
   }
   &.stock-varies {
-    background-color: lighten($color_stock, 14);
+    background-color: rgba($color_info, 1);
     &:after {
       content: "\f042";
     }
