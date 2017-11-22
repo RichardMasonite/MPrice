@@ -555,7 +555,7 @@ span.non-stock.read, span.stock-varies.read, span.stock.read,
 
 span.non-stock,
 .btn.non-stock {
-  background-color: rgba(201, 48, 44, 0.3);
+  background-color: #c9302c;
 }
 
 span.non-stock:after,
@@ -565,7 +565,7 @@ span.non-stock:after,
 
 span.stock-varies,
 .btn.stock-varies {
-  background-color: #7aadda;
+  background-color: #5bc0de;
 }
 
 span.stock-varies:after,
