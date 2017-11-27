@@ -583,6 +583,15 @@ span.stock:after,
   content: "\f111";
 }
 
+.btn-block {
+  display: inline-block;
+  width: 80%;
+}
+
+.btn-xs {
+  padding: 1px 0px;
+}
+
 .fa-trash {
   color: #c9302c;
 }

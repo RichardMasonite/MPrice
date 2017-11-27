@@ -657,7 +657,13 @@ span,
     }
   }
 }
-
+.btn-block {
+  display: inline-block;
+  width: 80%
+}
+.btn-xs {
+  padding: 1px 0px
+}
 .fa-trash {
   color: $color_danger
 }
