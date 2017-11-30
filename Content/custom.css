@@ -376,7 +376,7 @@ Tables
 
 .table .fa-plus-square-o,
 .table .fa-minus-square-o {
-  padding-right: 0.5rem;
+  padding-right: 0.2rem;
 }
 
 .table .fa-plus-square-o:hover,
@@ -391,12 +391,12 @@ Tables
 
 .table .subfamily .fa-plus-square-o,
 .table .subfamily .fa-minus-square-o {
-  margin-left: 1rem;
+  margin-left: 0.6rem;
 }
 
 .table .subfamily .subfamily .fa-plus-square-o,
 .table .subfamily .subfamily .fa-minus-square-o {
-  margin-left: 2rem;
+  margin-left: 1.2rem;
 }
 
 .table .subfamily .fa-picture-o {
@@ -583,7 +583,7 @@ span.stock:after,
   content: "\f111";
 }
 
-.btn-block {
+.table .btn-block {
   display: inline-block;
   width: 80%;
 }

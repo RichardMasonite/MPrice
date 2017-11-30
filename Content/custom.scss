@@ -426,7 +426,7 @@ Tables
   .fa-minus-square-o {
     @include space(padding,
     right,
-    .5rem);
+    .2rem);
     &:hover {
       cursor: pointer
     }
@@ -440,14 +440,14 @@ Tables
     .fa-minus-square-o {
       @include space(margin,
       left,
-      1rem);
+      .6rem);
     }
     .subfamily {
       .fa-plus-square-o,
       .fa-minus-square-o {
         @include space(margin,
         left,
-        2rem);
+        1.2rem);
       }
     }
     .fa-picture-o {
@@ -657,7 +657,7 @@ span,
     }
   }
 }
-.btn-block {
+.table .btn-block {
   display: inline-block;
   width: 80%
 }
