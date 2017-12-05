@@ -536,14 +536,6 @@ span.non-stock, span.stock-varies, span.stock,
   text-transform: uppercase;
 }
 
-span.non-stock:after, span.stock-varies:after, span.stock:after,
-.btn.non-stock:after,
-.btn.stock-varies:after,
-.btn.stock:after {
-  font: normal normal normal 11px/1 FontAwesome;
-  margin-left: 0.6rem;
-}
-
 span.non-stock.read, span.stock-varies.read, span.stock.read,
 .btn.non-stock.read,
 .btn.stock-varies.read,
@@ -558,29 +550,14 @@ span.non-stock,
   background-color: #c9302c;
 }
 
-span.non-stock:after,
-.btn.non-stock:after {
-  content: "\f10c";
-}
-
 span.stock-varies,
 .btn.stock-varies {
   background-color: #5bc0de;
 }
 
-span.stock-varies:after,
-.btn.stock-varies:after {
-  content: "\f042";
-}
-
 span.stock,
 .btn.stock {
   background-color: #428BCA;
-}
-
-span.stock:after,
-.btn.stock:after {
-  content: "\f111";
 }
 
 .btn-block {
@@ -791,10 +768,6 @@ Styleguide
   background-color: #428BCA;
   font-size: 100%;
   text-transform: none;
-}
-
-.colors.stock:after {
-  content: '';
 }
 
 .colors.lightgray {

@@ -626,12 +626,6 @@ span,
     padding: 5px;
     text-align: center;
     text-transform: uppercase;
-    &:after {
-      font: normal normal normal 11px/1 FontAwesome;
-      @include space(margin,
-      left,
-      .6rem);
-    }
     &.read {
       background-color: transparent;
       border-color: $color_gray;
@@ -640,21 +634,12 @@ span,
   }
   &.non-stock {
     background-color: rgba($color_danger, 1);
-    &:after {
-      content: "\f10c";
-    }
   }
   &.stock-varies {
     background-color: rgba($color_info, 1);
-    &:after {
-      content: "\f042";
-    }
   }
   &.stock {
     background-color: $color_stock;
-    &:after {
-      content: "\f111";
-    }
   }
 }
 .btn-block {
@@ -891,9 +876,6 @@ Styleguide
     background-color: $color_stock;
     font-size: 100%;
     text-transform: none;
-    &:after {
-      content: ''
-    }
   }
   &.lightgray {
     background-color: $bg_color_lightgray
